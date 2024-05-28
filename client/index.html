@@ -4,27 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>File Upload</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Upload File</h1>
-  <form id="uploadForm" enctype="multipart/form-data" method="POST" action="/upload">
-    <input type="file" name="file" required>
-    <button type="submit">Upload</button>
-  </form>
-  <div id="qrCode"></div>
-  <script>
-    document.getElementById('uploadForm').addEventListener('submit', async function (event) {
-      event.preventDefault();
-      const formData = new FormData(this);
-      const response = await fetch('/upload', {
-        method: 'POST',
-        body: formData
-      });
-      const data = await response.json();
-      const qrCodeImg = document.createElement('img');
-      qrCodeImg.src = data.qrCodeUrl;
-      document.getElementById('qrCode').appendChild(qrCodeImg);
-    });
-  </script>
+  <div class="container">
+    <div class="card">
+      <h3>Upload Files</h3>
+      <div class="drop_box">
+        <header>
+          <h4>Select File here</h4>
+        </header>
+        <p>Files Supported: PDF, TEXT, DOC, DOCX</p>
+        <input type="file" hidden accept=".doc,.docx,.pdf" id="fileID">
+        <button class="btn" id="chooseFileBtn">Choose File</button>
+      </div>
+      <div id="qrCode"></div>
+    </div>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
