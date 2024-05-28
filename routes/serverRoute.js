@@ -30,21 +30,23 @@ router.post('/upload', upload.single('file'), async (req, res) => {
   }
   
   const fileMetadata = {
-    filename: req.file.filename + '.enc',
+    filename: req.file.filename,
     originalname: req.file.originalname,
-    path: req.file.path + '.enc',
+    path: req.file.path,
     size: req.file.size,
     createdAt: new Date()
   };
 
-  files[req.file.filename + '.enc'] = fileMetadata;
+  files[req.file.filename] = fileMetadata;
 
-  encryptFile(req.file.path);
+//   encryptFile(req.file.path);
   
-  const fileUrl = `http://${req.headers.host}/download/${req.file.filename}.enc`;
+  const fileUrl = `http://${req.headers.host}/download/${req.file.filename}`;
   const qrCodeUrl = await QRCode.toDataURL(fileUrl);
-  scheduleFileDeletion(req.file.path+'.enc');
+//   scheduleFileDeletion(req.file.path+'.enc');
+  scheduleFileDeletion(req.file.path);
   res.json({ fileUrl, qrCodeUrl });
+  console.log(fileUrl);
 });
 
 
@@ -55,7 +57,7 @@ router.get("/download/:filename", (req, res) => {
   if (!file) {
     return res.status(404).send('File not found');
   }
-  decryptFile(file.path, res);
+  res.download(file.path);
 
 });
 
